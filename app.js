@@ -1,21 +1,21 @@
 async function fetchQuestions() {
     const questionUl = document.querySelector('#question-list');
 
-    const response = await fetch('https://reqres.in/api/users');
-    // const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
+    // const response = await fetch('https://reqres.in/api/users');
+    const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
     const json = await response.json();
 
-    json.data.forEach(q => {
-    // json.body.forEach(q => {
+    // json.data.forEach(q => {
+    json.body.forEach(q => {
         const newLi = document.createElement('li');
         const newHref = document.createElement('a');
-        const linkText = document.createTextNode('Question ' + q.first_name);
-        // const linkText = document.createTextNode('Question ' + q.question_summary);
+        // const linkText = document.createTextNode('Question ' + q.first_name);
+        const linkText = document.createTextNode(q.question_summary);
 
         newHref.className = 'usa-link';
         newHref.href = 'question-detail.html';
-        newHref.onclick = () => clickQuestion(q.id);
-        // newHref.onclick = () => clickQuestion(q.question_id);
+        // newHref.onclick = () => clickQuestion(q.id);
+        newHref.onclick = () => clickQuestion(q.question_id);
 
         newHref.appendChild(linkText);
         newLi.appendChild(newHref);
@@ -32,20 +32,24 @@ function clickQuestion(questionId) {
 async function fetchSingleQuestion() {
     const questionId = localStorage.getItem('questionId');
 
-    const response = await fetch('https://reqres.in/api/users/' + questionId);
+    const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
     const json = await response.json();
+    const question = json.body.find(q => q.question_id === questionId);
 
     const questionDiv = document.querySelector('#question-detail');
-    const questionCard = createCard('Summary: ' + questionId, 'Detail: ' + json.data.first_name);
+    const questionCard = createCard(question.question_summary, question.question_detail);
     questionDiv.appendChild(questionCard);
 
     const answersDiv = document.querySelector('#answer-list');
-    // for each answer
-    const answerCard1 = createCard('', 'Answer Detail1');
-    answersDiv.appendChild(answerCard1);
-
-    const answerCard2 = createCard('', 'Answer Detail2');
-    answersDiv.appendChild(answerCard2);
+    if (question.answer) {
+        question.answer.forEach(answer => {
+            const answerCard = createCard('', answer);
+            answersDiv.appendChild(answerCard);
+        });
+    } else {
+        const answersSection = document.querySelector('#answer-section');
+        answersSection.style.display = 'none';
+    }
 }
 
 
@@ -84,36 +88,71 @@ function createCard(summary, detail) {
 }
 
 
+function questionFormValid() {
+    const form = document.querySelector('#question-form');
+    let valid = true;
+
+    if (!form.question_summary.value) {
+        const questionSummaryGroup = document.querySelector('#question_summary-group');
+        questionSummaryGroup.classList.add('usa-form-group--error');
+        const questionSummaryLabel = document.querySelector('#question_summary-label');
+        questionSummaryLabel.classList.add('usa-label--error');
+        const questionSummaryErrorDiv = document.querySelector('#question_summary-error-message');
+        questionSummaryErrorDiv.style.display = 'block';
+        const questionSummaryInput = document.querySelector('#question_summary');
+        questionSummaryInput.classList.add('usa-input--error');
+        valid = false
+    }
+
+    if (!form.question_detail.value) {
+        const questionDetailGroup = document.querySelector('#question_detail-group');
+        questionDetailGroup.classList.add('usa-form-group--error');
+        const questionDetailLabel = document.querySelector('#question_detail-label');
+        questionDetailLabel.classList.add('usa-label--error');
+        const questionDetailErrorDiv = document.querySelector('#question_detail-error-message');
+        questionDetailErrorDiv.style.display = 'block';
+        const questionDetailInput = document.querySelector('#question_detail');
+        questionDetailInput.classList.add('usa-input--error');
+        valid = false;
+    }
+
+    return valid;
+}
+
+
 async function submitQuestion() {
     const form = document.querySelector('#question-form');
-    // form.submit();
 
-    const response = await fetch(
-        'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/AddQuestionFunction',
-        {
-            method: 'post',
-            mode: 'no-cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "question_summary": form.question_summary.value,
-                "question_detail": form.question_detail.value
-            })
+    if (questionFormValid()) {
+        const response = await fetch(
+            'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/AddQuestionFunction',
+            {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "question_summary": form.question_summary.value,
+                    "question_detail": form.question_detail.value
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const errorDiv = document.querySelector('#add-question-error');
+            errorDiv.style.display = 'block';
+
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        } else {
+            navigateToIndex();
         }
-    );
-
-    if (!response.ok) {
-        throw Error(response.statusText);
-    } else {
-        navigateToIndex();
     }
 }
 
 
 async function answerQuestion() {
-    // TODO
+    // TODO - send questionId and answer-text
 }
 
 
