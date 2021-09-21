@@ -7,8 +7,9 @@ phases:
     commands:
       - echo "pre_build"
   build:
-    command:
+    commands:
       - echo "build"
+      - aws s3 ls
   post_build:
     commands:
       - echo "post_build"
