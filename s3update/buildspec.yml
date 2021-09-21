@@ -1,5 +1,14 @@
 version: 0.2
-    phases:
-        install:
-            commands:
-                - ls -la
+phases:
+  install:
+    commands:
+      - ls -la
+  pre_build:
+    commands:
+      - echo "pre_build"
+  build:
+    command:
+      - echo "build"
+  post_build:
+    commands:
+      - echo "post_build"
