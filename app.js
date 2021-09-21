@@ -2,16 +2,20 @@ async function fetchQuestions() {
     const questionUl = document.querySelector('#question-list');
 
     const response = await fetch('https://reqres.in/api/users');
+    // const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
     const json = await response.json();
 
     json.data.forEach(q => {
+    //json..forEach(q => {
         const newLi = document.createElement('li');
         const newHref = document.createElement('a');
         const linkText = document.createTextNode('Question ' + q.first_name);
+        // const linkText = document.createTextNode('Question ' + q.question_id);
 
         newHref.className = 'usa-link';
         newHref.href = 'question-detail.html';
         newHref.onclick = () => clickQuestion(q.id);
+        // newHref.onclick = () => clickQuestion(q.question_id);
 
         newHref.appendChild(linkText);
         newLi.appendChild(newHref);
@@ -20,7 +24,6 @@ async function fetchQuestions() {
 }
 
 function clickQuestion(questionId) {
-    console.log(questionId);
     localStorage.setItem('questionId', questionId);
 }
 
@@ -48,12 +51,12 @@ function onCancelAsk() {
 
 function toggleAnswerForm() {
     const answerForm = document.querySelector('#answer-form');
-    answerForm.hidden = !answerForm.hidden;
-
     const toggleAnswerButton = document.querySelector('#toggle-answer-button');
-    if (toggleAnswerButton.style.display === 'none') {
-        toggleAnswerButton.style.display = 'block';
-    } else {
+    if (answerForm.style.display === 'none') {
+        answerForm.style.display = 'block';
         toggleAnswerButton.style.display = 'none';
+    } else {
+        answerForm.style.display = 'none';
+        toggleAnswerButton.style.display = 'block';
     }
 }
