@@ -145,20 +145,21 @@
         </li>
       </ul>
 
-      <form class="usa-search usa-search--small" role="search">
-        <label class="usa-sr-only" for="basic-search-field-en-small">
-          Search
-        </label>
-        <input
-                class="usa-input"
-                id="basic-search-field-en-small"
-                type="search"
-                name="search"
-        />
-        <button class="usa-button" type="submit">
-          <span class="usa-sr-only">Search</span>
-        </button>
-      </form>
+      <!-- TODO if we have time -->
+<!--      <form class="usa-search usa-search&#45;&#45;small" role="search">-->
+<!--        <label class="usa-sr-only" for="basic-search-field-en-small">-->
+<!--          Search-->
+<!--        </label>-->
+<!--        <input-->
+<!--                class="usa-input"-->
+<!--                id="basic-search-field-en-small"-->
+<!--                type="search"-->
+<!--                name="search"-->
+<!--        />-->
+<!--        <button class="usa-button" type="submit">-->
+<!--          <span class="usa-sr-only">Search</span>-->
+<!--        </button>-->
+<!--      </form>-->
     </nav>
   </div>
 </header>
@@ -167,28 +168,31 @@
 <main id="main-content">
 
   <div class="grid-container">
+
     <div class="grid-row margin-top-3">
       <!-- START QUESTIONS DETAIL -->
       <div id="question-detail" class="grid-col-8"></div>
       <!-- END QUESTION DETAIL -->
     </div>
 
-    <div class="grid-row margin-top-3">
+    <h3>Answers</h3>
+
+    <div class="grid-row">
       <!-- START LIST ANSWERS -->
-      TODO - List Answers
       <div id="answer-list" class="grid-col-8"></div>
       <!-- END LIST ANSWERS -->
     </div>
 
-    <div class="grid-row margin-top-3">
+    <div class="grid-row">
       <!-- START ANSWER FORM -->
       <button
         id="toggle-answer-button"
         type="button"
-        class="usa-button margin-top-3"
+        class="usa-button usa-button--outline"
         onclick="toggleAnswerForm()">
-          Answer
+          Provide an Answer
       </button>
+
       <div id="answer-form" class="grid-col-8" style="display: none">
         <form action="">
           <label for="answer-text" id="usa-label">Enter your answer</label>
@@ -199,8 +203,19 @@
             name="answer-text"
           ></textarea>
 
-          <button type="submit" class="usa-button margin-top-3">Submit</button>
-          <button type="button" class="usa-button usa-button--unstyled" onclick="toggleAnswerForm()">Cancel</button>
+          <ul class="usa-button-group margin-top-1">
+            <li class="usa-button-group__item">
+              <button
+                type="button"
+                class="usa-button usa-button--outline"
+                onclick="toggleAnswerForm()">
+                Cancel
+              </button>
+            </li>
+            <li class="usa-button-group__item">
+              <button type="submit" class="usa-button">Submit</button>
+            </li>
+          </ul>
         </form>
       </div>
       <!-- END ANSWER FORM -->

@@ -23,9 +23,11 @@ async function fetchQuestions() {
     });
 }
 
+
 function clickQuestion(questionId) {
     localStorage.setItem('questionId', questionId);
 }
+
 
 async function fetchSingleQuestion() {
     const questionId = localStorage.getItem('questionId');
@@ -34,20 +36,73 @@ async function fetchSingleQuestion() {
     const json = await response.json();
 
     const questionDiv = document.querySelector('#question-detail');
-    questionDiv.innerHTML = 'Question ID: ' + questionId + ', First Name: ' + json.data.first_name;
+    const questionCard = createCard('Summary: ' + questionId, 'Detail: ' + json.data.first_name);
+    questionDiv.appendChild(questionCard);
+
+    const answersDiv = document.querySelector('#answer-list');
+    // for each answer
+    const answerCard1 = createCard('', 'Answer Detail1');
+    answersDiv.appendChild(answerCard1);
+
+    const answerCard2 = createCard('', 'Answer Detail2');
+    answersDiv.appendChild(answerCard2);
 }
+
+
+function createCard(summary, detail) {
+    const card = document.createElement('div');
+    card.className = 'grid-col-8 usa-card';
+
+    const cardContainer = document.createElement('div');
+    cardContainer.className = 'usa-card__container';
+    card.appendChild(cardContainer);
+
+    if (summary) {
+        const cardHeader = document.createElement('header');
+        cardHeader.className = 'usa-card__header';
+        cardContainer.appendChild(cardHeader);
+
+        const cardHeading = document.createElement('h2');
+        cardHeading.className = 'usa-card__heading';
+        cardHeader.appendChild(cardHeading);
+
+        const cardHeaderText = document.createTextNode(summary);
+        cardHeading.appendChild(cardHeaderText);
+    }
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'usa-card__body';
+    cardContainer.appendChild(cardBody);
+
+    const cardBodyP = document.createElement('p');
+    cardBody.appendChild(cardBodyP);
+
+    const cardBodyText = document.createTextNode(detail);
+    cardBodyP.appendChild(cardBodyText);
+
+    return card;
+}
+
 
 function askQuestion() {
     // TODO
 }
 
+
 function answerQuestion() {
     // TODO
 }
 
+
+function onNavigateToAsk() {
+    window.location.href = 'ask-question.html';
+}
+
+
 function onCancelAsk() {
     window.location.href = 'index.html';
 }
+
 
 function toggleAnswerForm() {
     const answerForm = document.querySelector('#answer-form');
