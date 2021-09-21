@@ -169,7 +169,10 @@
   <!-- START QUESTIONS ANSWER FORM -->
   <div class="grid-container margin-top-3">
     <div class="grid-row">
-      <form action="">
+      <form
+        id='question-form'
+        action="https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/AddQuestionFunction"
+        method="post">
         <fieldset class="usa-fieldset">
           <legend class="usa-legend usa-legend--large">
             Please enter a question
@@ -195,12 +198,12 @@
               <button
                 type="button"
                 class="usa-button usa-button--outline"
-                onclick="onCancelAsk()">
+                onclick="navigateToIndex()">
                 Cancel
               </button>
             </li>
             <li class="usa-button-group__item">
-              <button type="submit" class="usa-button">Ask!</button>
+              <button type="button" class="usa-button" onclick="submitQuestion()">Ask!</button>
             </li>
           </ul>
         </fieldset>

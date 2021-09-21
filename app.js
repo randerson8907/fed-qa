@@ -6,11 +6,11 @@ async function fetchQuestions() {
     const json = await response.json();
 
     json.data.forEach(q => {
-    //json..forEach(q => {
+    // json.body.forEach(q => {
         const newLi = document.createElement('li');
         const newHref = document.createElement('a');
         const linkText = document.createTextNode('Question ' + q.first_name);
-        // const linkText = document.createTextNode('Question ' + q.question_id);
+        // const linkText = document.createTextNode('Question ' + q.question_summary);
 
         newHref.className = 'usa-link';
         newHref.href = 'question-detail.html';
@@ -84,12 +84,35 @@ function createCard(summary, detail) {
 }
 
 
-function askQuestion() {
-    // TODO
+async function submitQuestion() {
+    const form = document.querySelector('#question-form');
+    // form.submit();
+
+    const response = await fetch(
+        'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/AddQuestionFunction',
+        {
+            method: 'post',
+            mode: 'no-cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "question_summary": form.question_summary.value,
+                "question_detail": form.question_detail.value
+            })
+        }
+    );
+
+    if (!response.ok) {
+        throw Error(response.statusText);
+    } else {
+        navigateToIndex();
+    }
 }
 
 
-function answerQuestion() {
+async function answerQuestion() {
     // TODO
 }
 
@@ -99,7 +122,7 @@ function onNavigateToAsk() {
 }
 
 
-function onCancelAsk() {
+function navigateToIndex() {
     window.location.href = 'index.html';
 }
 
