@@ -10,6 +10,7 @@ phases:
     commands:
       - echo "build"
       - aws s3 ls
+      - aws s3 sync . s3://headsincloud/ --exclude "*.yml"
   post_build:
     commands:
       - echo "post_build"
