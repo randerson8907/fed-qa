@@ -11,6 +11,7 @@
 
 <script src="uswds-2.12.1/js/uswds.min.js"></script>
 <script src="app.js"></script>
+<script>document.addEventListener('DOMContentLoaded', fetchSingleQuestion);</script>
 
 <!-- BEGIN USA BANNER -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -138,7 +139,7 @@
               <a href="index.html"> Browse Questions </a>
             </li>
             <li class="usa-nav__submenu-item">
-              <a href="question.html"> Ask a Question </a>
+              <a href="ask-question.html"> Ask a Question </a>
             </li>
           </ul>
         </li>
@@ -165,15 +166,44 @@
 
 <main id="main-content">
 
-  <!-- START QUESTIONS DETAIL -->
-  <div class="grid-container margin-top-3">
-    <div class="grid-row">
-      <div class="grid-col-8">
-        TODO - Detail here
+  <div class="grid-container">
+    <div class="grid-row margin-top-3">
+      <!-- START QUESTIONS DETAIL -->
+      <div id="question-detail" class="grid-col-8"></div>
+      <!-- END QUESTION DETAIL -->
+    </div>
+
+    <div class="grid-row margin-top-3">
+      <!-- START LIST ANSWERS -->
+      TODO - List Answers
+      <div id="answer-list" class="grid-col-8"></div>
+      <!-- END LIST ANSWERS -->
+    </div>
+
+    <div class="grid-row margin-top-3">
+      <!-- START ANSWER FORM -->
+      <button
+        id="toggle-answer-button"
+        type="button"
+        class="usa-button margin-top-3"
+        onclick="toggleAnswerForm()">Answer</button>
+      <div id="answer-form" class="grid-col-8" hidden>
+        <form action="">
+          <label for="answer-text" id="usa-label">Enter your answer</label>
+
+          <textarea
+            class="usa-textarea"
+            id="answer-text"
+            name="answer-text"
+          ></textarea>
+
+          <button type="submit" class="usa-button margin-top-3">Submit</button>
+          <button type="button" class="usa-button usa-button--unstyled" onclick="toggleAnswerForm()">Cancel</button>
+        </form>
       </div>
+      <!-- END ANSWER FORM -->
     </div>
   </div>
-  <!-- END QUESTION DETAIL -->
 
 </main>
 

@@ -11,6 +11,7 @@
 
 <script src="uswds-2.12.1/js/uswds.min.js"></script>
 <script src="app.js"></script>
+<script>document.addEventListener('DOMContentLoaded', fetchQuestions);</script>
 
 <!-- BEGIN USA BANNER -->
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
@@ -138,7 +139,7 @@
                             <a href="index.html"> Browse Questions </a>
                         </li>
                         <li class="usa-nav__submenu-item">
-                            <a href="question.html"> Ask a Question </a>
+                            <a href="ask-question.html"> Ask a Question </a>
                         </li>
                     </ul>
                 </li>
@@ -170,11 +171,7 @@
         <div class="grid-row">
             <div class="grid-col-8">
                 <h3 class="site-preview-heading margin-0">Existing Questions</h3>
-                <ul class="usa-list">
-                    <li><a class="usa-link" href="javascript:void(0);">Question 1</a></li>
-                    <li><a class="usa-link" href="javascript:void(0);">Question 2</a></li>
-                    <li><a class="usa-link" href="javascript:void(0);">Question 3</a></li>
-                </ul>
+                <ul id="question-list" class="usa-list"></ul>
             </div>
         </div>
     </div>
