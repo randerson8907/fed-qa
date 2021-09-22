@@ -48,7 +48,11 @@ async function fetchSingleQuestion() {
         answersSection.style.display = 'block';
 
         question.answer.forEach(answer => {
-            const answerCard = createAnswerCard(answer);
+            const answerCard = createAnswerCard(questionId,
+                                                answer.id,
+                                                answer.answerText,
+                                                answer.score,
+                                                answer.accepted);
             answersDiv.appendChild(answerCard);
         });
     }
@@ -58,6 +62,13 @@ async function fetchSingleQuestion() {
 
     const loadingDiv = document.querySelector('#loading');
     loadingDiv.style.display = 'none';
+
+    // Remove the example icons that were used to copy
+    const upvoteButtonExample = document.querySelector('#upvote-button-example');
+    upvoteButtonExample.parentNode.removeChild(upvoteButtonExample);
+
+    const acceptedIconExample = document.querySelector('#accepted-icon-example');
+    acceptedIconExample.parentNode.removeChild(acceptedIconExample);
 }
 
 
@@ -94,7 +105,7 @@ function createQuestionCard(summary, detail) {
 }
 
 
-function createAnswerCard(answer, votes) {
+function createAnswerCard(questionId, answerId, answerText, score, isAccepted) {
     const card = document.createElement('div');
     card.className = 'usa-card';
 
@@ -121,7 +132,7 @@ function createAnswerCard(answer, votes) {
     const answerP = document.createElement('p');
     answerSectionCol.appendChild(answerP);
 
-    const answerBodyText = document.createTextNode(answer);
+    const answerBodyText = document.createTextNode(answerText);
     answerP.appendChild(answerBodyText);
 
     const scoreSectionRow = document.createElement('div');
@@ -132,54 +143,32 @@ function createAnswerCard(answer, votes) {
     scoreSectionCol.className = 'grid-col';
     scoreSectionRow.appendChild(scoreSectionCol);
 
-    const downvoteButton = document.createElement('button');
-    downvoteButton.type = 'button';
-    downvoteButton.className = 'usa-button usa-button--unstyled';
-    downvoteButton.onclick = () => voteOnAnswer(-1);
-    scoreSectionCol.appendChild(downvoteButton);
+    if (isAccepted) {
+        const acceptedIconExample = document.querySelector('#accepted-icon-example');
+        const acceptedIconClone = acceptedIconExample.cloneNode(true);
+        acceptedIconClone.id = '';
+        scoreSectionCol.appendChild(acceptedIconClone);
+    }
 
-    const downvoteSvg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    downvoteSvg.setAttribute('class', 'usa-icon');
-    downvoteSvg.setAttribute('aria-hidden', 'true');
-    downvoteSvg.setAttribute('focusable', 'false');
-    downvoteSvg.setAttribute('role', 'img');
+    const scoreSpan = document.createElement('span');
+    scoreSectionCol.appendChild(scoreSpan);
 
+    const scoreText = document.createTextNode(score);
+    scoreSpan.appendChild(scoreText);
 
-    const downvoteUse = document.createElement('use');
-    downvoteUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'uswds-2.12.1/img/sprite.svg#thumb_down_alt');
-    downvoteSvg.appendChild(downvoteUse);
-    downvoteButton.appendChild(downvoteSvg);
-
-
-    const voteCountSpan = document.createElement('span');
-    scoreSectionCol.appendChild(voteCountSpan);
-
-    const voteCountText = document.createTextNode(votes);
-    voteCountSpan.appendChild(voteCountText);
-
-    const upvoteButton = document.createElement('button');
-    upvoteButton.type = 'button';
-    upvoteButton.className = 'usa-button usa-button--unstyled';
-    upvoteButton.onclick = () => voteOnAnswer(1);
-    scoreSectionCol.appendChild(upvoteButton);
-
-    const upvoteSvg = document.createElement('svg');
-    upvoteSvg.className = 'usa-icon';
-    upvoteSvg.setAttribute('aria-hidden', 'true');
-    upvoteSvg.setAttribute('focusable', 'false');
-    upvoteSvg.setAttribute('role', 'img');
-    upvoteButton.appendChild(upvoteSvg);
-
-    const upvoteUse = document.createElement('use');
-    upvoteUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'uswds-2.12.1/img/sprite.svg#thumb_up_alt');
-    upvoteButton.appendChild(upvoteUse);
+    const upvoteExampleButton = document.querySelector('#upvote-button-example');
+    const upvoteButtonClone = upvoteExampleButton.cloneNode(true);
+    upvoteButtonClone.id = '';
+    upvoteButtonClone.onclick = () => voteOnAnswer(questionId, answerId)
+    scoreSectionCol.appendChild(upvoteButtonClone);
 
     return card;
 }
 
 
-function voteOnAnswer(value) {
+function voteOnAnswer(questionId, answerId) {
     // TODO
+    console.log('upvotting answer ' + answerId + ' for question ' + questionId);
 }
 
 
