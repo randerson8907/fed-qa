@@ -20,9 +20,9 @@ async function fetchQuestions() {
         let hasAcceptedAnswer = false;
         if (q.answer) {
             hasAcceptedAnswer = q.answer.some(answer => answer.accepted);
+            newLi.appendChild(createQuestionIcons(q.answer.length, hasAcceptedAnswer));
         }
 
-        newLi.appendChild(createQuestionIcons(q.answer.length, hasAcceptedAnswer));
     });
 
     const loadingDiv = document.querySelector('#loading');
