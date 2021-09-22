@@ -48,7 +48,7 @@ async function fetchSingleQuestion() {
         answersSection.style.display = 'block';
 
         question.answer.forEach(answer => {
-            const answerCard = createCard('', answer);
+            const answerCard = createCard('', answer.answerText);
             answersDiv.appendChild(answerCard);
         });
     }
