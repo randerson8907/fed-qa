@@ -1,20 +1,16 @@
 async function fetchQuestions() {
     const questionUl = document.querySelector('#question-list');
 
-    // const response = await fetch('https://reqres.in/api/users');
     const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
     const json = await response.json();
 
-    // json.data.forEach(q => {
     json.body.forEach(q => {
         const newLi = document.createElement('li');
         const newHref = document.createElement('a');
-        // const linkText = document.createTextNode('Question ' + q.first_name);
         const linkText = document.createTextNode(q.question_summary);
 
         newHref.className = 'usa-link';
         newHref.href = 'question-detail.html';
-        // newHref.onclick = () => clickQuestion(q.id);
         newHref.onclick = () => clickQuestion(q.question_id);
 
         newHref.appendChild(linkText);
@@ -42,6 +38,9 @@ async function fetchSingleQuestion() {
     const questionDiv = document.querySelector('#question-detail');
     const questionCard = createCard(question.question_summary, question.question_detail);
     questionDiv.appendChild(questionCard);
+
+    const questionIdHiddenInput = document.querySelector('#question_id');
+    questionIdHiddenInput.value = questionId;
 
     const answersDiv = document.querySelector('#answer-list');
     if (question.answer) {
@@ -160,12 +159,44 @@ async function submitQuestion() {
 }
 
 
-async function answerQuestion() {
-    // TODO - send questionId and answer-text
+function answerFormValid() {
+    // TODO
+    return true;
 }
 
 
-function onNavigateToAsk() {
+async function answerQuestion() {
+    const form = document.querySelector('#answer-form');
+
+    if (answerFormValid()) {
+        const response = await fetch(
+            'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/AddAnswerFunction',
+            {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "question_id": form.question_id.value,
+                    "answer": form.answer.value
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const errorDiv = document.querySelector('#add-answer-error');
+            errorDiv.style.display = 'block';
+
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        } else {
+            location.reload();
+        }
+    }
+}
+
+
+function navigateToAsk() {
     window.location.href = 'ask-question.html';
 }
 
@@ -176,7 +207,7 @@ function navigateToIndex() {
 
 
 function toggleAnswerForm() {
-    const answerForm = document.querySelector('#answer-form');
+    const answerForm = document.querySelector('#answer-form-section');
     const toggleAnswerButton = document.querySelector('#toggle-answer-button');
     if (answerForm.style.display === 'none') {
         answerForm.style.display = 'block';

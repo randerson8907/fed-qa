@@ -104,14 +104,15 @@
           Provide an Answer
       </button>
 
-      <div id="answer-form" class="grid-col-8" style="display: none">
-        <form action="">
-          <label for="answer-text" id="usa-label">Enter your answer</label>
+      <div id="answer-form-section" class="grid-col-8" style="display: none">
+        <form id="answer-form">
+          <input type="hidden" id="question_id" name="question_id" value="">
 
+          <label for="answer" class="usa-label">Enter your answer</label>
           <textarea
             class="usa-textarea"
-            id="answer-text"
-            name="answer-text"
+            id="answer"
+            name="answer"
           ></textarea>
 
           <ul class="usa-button-group margin-top-1">
@@ -124,9 +125,16 @@
               </button>
             </li>
             <li class="usa-button-group__item">
-              <button type="submit" class="usa-button">Submit</button>
+              <button type="button" class="usa-button" onclick="answerQuestion()">Submit</button>
             </li>
           </ul>
+
+          <div
+            id="add-answer-error"
+            class="text-red"
+            style="display: none">
+            Error occurred when trying to add an answer.
+          </div>
         </form>
       </div>
       <!-- END ANSWER FORM -->
