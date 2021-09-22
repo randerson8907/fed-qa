@@ -49,7 +49,7 @@ async function fetchSingleQuestion() {
 
         const hasAcceptedAnswer = question.answer.some(answer => answer.accepted);
 
-        question.answer.forEach(answer => {
+        sortAnswers(question.answer).forEach(answer => {
             const answerCard = createAnswerCard(questionId,
                                                 answer.id,
                                                 answer.answerText,
@@ -75,6 +75,25 @@ async function fetchSingleQuestion() {
 
     const acceptedIconExample = document.querySelector('#accepted-icon-example');
     acceptedIconExample.parentNode.removeChild(acceptedIconExample);
+}
+
+
+function sortAnswers(answers) {
+    const sortedAnswers = [];
+
+    // Find an accepted answer
+    const acceptedAnswer = answers.find(answer => answer.accepted);
+    if (acceptedAnswer) {
+        sortedAnswers.push(acceptedAnswer);
+    }
+
+    // Sort the non-accepted answers by score
+    const nonAcceptedAnswers = answers.filter(answer => !answer.accepted);
+    const soredNonAcceptedAnswers = nonAcceptedAnswers.sort(
+        (firstAnswer, secondAnswer) => secondAnswer.score - firstAnswer.score
+    );
+
+    return sortedAnswers.concat(soredNonAcceptedAnswers);
 }
 
 
@@ -180,11 +199,24 @@ function createAnswerCard(questionId, answerId, answerText, score, hasAcceptedAn
 
 
 async function acceptAnswer(questionId, answerId) {
-    // TODO
-    console.log(JSON.stringify({
-        'question_id': questionId,
-        'answer_id': answerId
-    }));
+    const response = await fetch(
+        'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/acceptanswer',
+        {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'question_id': questionId,
+                'answer_id': answerId
+            })
+        }
+    );
+
+    if (response.ok) {
+        location.reload();
+    }
 }
 
 
