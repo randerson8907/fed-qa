@@ -87,7 +87,7 @@
 
     <div id="answer-section" class="grid-row" style="display: none">
       <div class="grid-col-8">
-         <h3>Answers</h3>
+        <h3>Answers</h3>
       </div>
       <!-- START LIST ANSWERS -->
       <div id="answer-list" class="grid-col-8"></div>
@@ -108,12 +108,17 @@
         <form id="answer-form">
           <input type="hidden" id="question_id" name="question_id" value="">
 
-          <label for="answer" class="usa-label">Enter your answer</label>
-          <textarea
-            class="usa-textarea"
-            id="answer"
-            name="answer"
-          ></textarea>
+          <div class="usa-form-group" id="answer-group">
+            <label for="answer" class="usa-label" id="answer-label">Enter your answer</label>
+            <span class="usa-error-message" id="answer-error-message" style="display: none">
+              Answer is required
+            </span>
+            <textarea
+              class="usa-textarea"
+              id="answer"
+              name="answer"
+            ></textarea>
+          </div>
 
           <ul class="usa-button-group margin-top-1">
             <li class="usa-button-group__item">

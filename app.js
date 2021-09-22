@@ -36,7 +36,7 @@ async function fetchSingleQuestion() {
     const question = json.body.find(q => q.question_id === questionId);
 
     const questionDiv = document.querySelector('#question-detail');
-    const questionCard = createCard(question.question_summary, question.question_detail);
+    const questionCard = createQuestionCard(question.question_summary, question.question_detail, false);
     questionDiv.appendChild(questionCard);
 
     const questionIdHiddenInput = document.querySelector('#question_id');
@@ -48,7 +48,7 @@ async function fetchSingleQuestion() {
         answersSection.style.display = 'block';
 
         question.answer.forEach(answer => {
-            const answerCard = createCard('', answer);
+            const answerCard = createAnswerCard(answer);
             answersDiv.appendChild(answerCard);
         });
     }
@@ -61,26 +61,24 @@ async function fetchSingleQuestion() {
 }
 
 
-function createCard(summary, detail) {
+function createQuestionCard(summary, detail) {
     const card = document.createElement('div');
-    card.className = 'grid-col-8 usa-card';
+    card.className = 'usa-card';
 
     const cardContainer = document.createElement('div');
     cardContainer.className = 'usa-card__container';
     card.appendChild(cardContainer);
 
-    if (summary) {
-        const cardHeader = document.createElement('header');
-        cardHeader.className = 'usa-card__header';
-        cardContainer.appendChild(cardHeader);
+    const cardHeader = document.createElement('header');
+    cardHeader.className = 'usa-card__header';
+    cardContainer.appendChild(cardHeader);
 
-        const cardHeading = document.createElement('h2');
-        cardHeading.className = 'usa-card__heading';
-        cardHeader.appendChild(cardHeading);
+    const cardHeading = document.createElement('h2');
+    cardHeading.className = 'usa-card__heading';
+    cardHeader.appendChild(cardHeading);
 
-        const cardHeaderText = document.createTextNode(summary);
-        cardHeading.appendChild(cardHeaderText);
-    }
+    const cardHeaderText = document.createTextNode(summary);
+    cardHeading.appendChild(cardHeaderText);
 
     const cardBody = document.createElement('div');
     cardBody.className = 'usa-card__body';
@@ -93,6 +91,95 @@ function createCard(summary, detail) {
     cardBodyP.appendChild(cardBodyText);
 
     return card;
+}
+
+
+function createAnswerCard(answer, votes) {
+    const card = document.createElement('div');
+    card.className = 'usa-card';
+
+    const cardContainer = document.createElement('div');
+    cardContainer.className = 'usa-card__container';
+    card.appendChild(cardContainer);
+
+    const cardBody = document.createElement('div');
+    cardBody.className = 'usa-card__body';
+    cardContainer.appendChild(cardBody);
+
+    const cardBodyContainer = document.createElement('div');
+    cardBodyContainer.className = 'grid-container';
+    cardBody.appendChild(cardBodyContainer);
+
+    const answerSectionRow = document.createElement('div');
+    answerSectionRow.className = 'grid-row';
+    cardBodyContainer.appendChild(answerSectionRow);
+
+    const answerSectionCol = document.createElement('div');
+    answerSectionCol.className = 'grid-col';
+    answerSectionRow.appendChild(answerSectionCol);
+
+    const answerP = document.createElement('p');
+    answerSectionCol.appendChild(answerP);
+
+    const answerBodyText = document.createTextNode(answer);
+    answerP.appendChild(answerBodyText);
+
+    const scoreSectionRow = document.createElement('div');
+    scoreSectionRow.className = 'grid-row margin-top-1';
+    cardBodyContainer.appendChild(scoreSectionRow);
+
+    const scoreSectionCol = document.createElement('div');
+    scoreSectionCol.className = 'grid-col';
+    scoreSectionRow.appendChild(scoreSectionCol);
+
+    const downvoteButton = document.createElement('button');
+    downvoteButton.type = 'button';
+    downvoteButton.className = 'usa-button usa-button--unstyled';
+    downvoteButton.onclick = () => voteOnAnswer(-1);
+    scoreSectionCol.appendChild(downvoteButton);
+
+    const downvoteSvg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    downvoteSvg.setAttribute('class', 'usa-icon');
+    downvoteSvg.setAttribute('aria-hidden', 'true');
+    downvoteSvg.setAttribute('focusable', 'false');
+    downvoteSvg.setAttribute('role', 'img');
+
+
+    const downvoteUse = document.createElement('use');
+    downvoteUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'uswds-2.12.1/img/sprite.svg#thumb_down_alt');
+    downvoteSvg.appendChild(downvoteUse);
+    downvoteButton.appendChild(downvoteSvg);
+
+
+    const voteCountSpan = document.createElement('span');
+    scoreSectionCol.appendChild(voteCountSpan);
+
+    const voteCountText = document.createTextNode(votes);
+    voteCountSpan.appendChild(voteCountText);
+
+    const upvoteButton = document.createElement('button');
+    upvoteButton.type = 'button';
+    upvoteButton.className = 'usa-button usa-button--unstyled';
+    upvoteButton.onclick = () => voteOnAnswer(1);
+    scoreSectionCol.appendChild(upvoteButton);
+
+    const upvoteSvg = document.createElement('svg');
+    upvoteSvg.className = 'usa-icon';
+    upvoteSvg.setAttribute('aria-hidden', 'true');
+    upvoteSvg.setAttribute('focusable', 'false');
+    upvoteSvg.setAttribute('role', 'img');
+    upvoteButton.appendChild(upvoteSvg);
+
+    const upvoteUse = document.createElement('use');
+    upvoteUse.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'uswds-2.12.1/img/sprite.svg#thumb_up_alt');
+    upvoteButton.appendChild(upvoteUse);
+
+    return card;
+}
+
+
+function voteOnAnswer(value) {
+    // TODO
 }
 
 
@@ -160,8 +247,22 @@ async function submitQuestion() {
 
 
 function answerFormValid() {
-    // TODO
-    return true;
+    const form = document.querySelector('#answer-form');
+    let valid = true;
+
+    if (!form.answer.value) {
+        const answerGroup = document.querySelector('#answer-group');
+        answerGroup.classList.add('usa-form-group--error');
+        const answerLabel = document.querySelector('#answer-label');
+        answerLabel.classList.add('usa-label--error');
+        const answerErrorDiv = document.querySelector('#answer-error-message');
+        answerErrorDiv.style.display = 'block';
+        const answerInput = document.querySelector('#answer');
+        answerInput.classList.add('usa-input--error');
+        valid = false
+    }
+
+    return valid;
 }
 
 
