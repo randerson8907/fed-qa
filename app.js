@@ -21,6 +21,9 @@ async function fetchQuestions() {
         newLi.appendChild(newHref);
         questionUl.appendChild(newLi);
     });
+
+    const loadingDiv = document.querySelector('#loading');
+    loadingDiv.style.display = 'none';
 }
 
 
@@ -42,14 +45,20 @@ async function fetchSingleQuestion() {
 
     const answersDiv = document.querySelector('#answer-list');
     if (question.answer) {
+        const answersSection = document.querySelector('#answer-section');
+        answersSection.style.display = 'block';
+
         question.answer.forEach(answer => {
             const answerCard = createCard('', answer);
             answersDiv.appendChild(answerCard);
         });
-    } else {
-        const answersSection = document.querySelector('#answer-section');
-        answersSection.style.display = 'none';
     }
+
+    const answerButtonsDiv = document.querySelector('#answer-buttons');
+    answerButtonsDiv.style.display = 'block';
+
+    const loadingDiv = document.querySelector('#loading');
+    loadingDiv.style.display = 'none';
 }
 
 

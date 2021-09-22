@@ -80,11 +80,12 @@
 
     <div class="grid-row margin-top-3">
       <!-- START QUESTIONS DETAIL -->
+      <div id="loading">Loading...</div>
       <div id="question-detail" class="grid-col-8"></div>
       <!-- END QUESTION DETAIL -->
     </div>
 
-    <div id="answer-section" class="grid-row">
+    <div id="answer-section" class="grid-row" style="display: none">
       <div class="grid-col-8">
          <h3>Answers</h3>
       </div>
@@ -93,7 +94,7 @@
       <!-- END LIST ANSWERS -->
     </div>
 
-    <div class="grid-row">
+    <div id="answer-buttons" class="grid-row" style="display: none">
       <!-- START ANSWER FORM -->
       <button
         id="toggle-answer-button"
