@@ -16,10 +16,47 @@ async function fetchQuestions() {
         newHref.appendChild(linkText);
         newLi.appendChild(newHref);
         questionUl.appendChild(newLi);
+
+        let hasAcceptedAnswer = false;
+        if (q.answer) {
+            hasAcceptedAnswer = q.answer.some(answer => answer.accepted);
+        }
+
+        newLi.appendChild(createQuestionIcons(q.answer.length, hasAcceptedAnswer));
     });
 
     const loadingDiv = document.querySelector('#loading');
     loadingDiv.style.display = 'none';
+
+    // Remove the example icons
+    const answerIconExample = document.querySelector('#answer-icon-example');
+    answerIconExample.parentNode.removeChild(answerIconExample);
+
+    const acceptedIconExample = document.querySelector('#accepted-icon-example');
+    acceptedIconExample.parentNode.removeChild(acceptedIconExample);
+}
+
+
+function createQuestionIcons(answerCount, hasAcceptedAnswer) {
+    const iconsSpan = document.createElement('span');
+    iconsSpan.className = 'margin-left-1';
+
+    if (hasAcceptedAnswer) {
+        const acceptedIconExample = document.querySelector('#accepted-icon-example');
+        const acceptedIconClone = acceptedIconExample.cloneNode(true);
+        acceptedIconClone.id = '';
+        iconsSpan.appendChild(acceptedIconClone);
+    }
+
+    const answerIconExample = document.querySelector('#answer-icon-example');
+    const answerIconClone = answerIconExample.cloneNode(true);
+    answerIconClone.id = '';
+    iconsSpan.appendChild(answerIconClone);
+
+    const answerCountText = document.createTextNode(answerCount);
+    iconsSpan.appendChild(answerCountText);
+
+    return iconsSpan;
 }
 
 
