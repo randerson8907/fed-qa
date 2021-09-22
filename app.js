@@ -190,7 +190,7 @@ async function acceptAnswer(questionId, answerId) {
 
 async function voteOnAnswer(questionId, answerId) {
     const response = await fetch(
-        'TODO',
+        'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/upvoteanswer',
         {
             method: 'post',
             headers: {
