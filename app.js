@@ -47,11 +47,14 @@ async function fetchSingleQuestion() {
         const answersSection = document.querySelector('#answer-section');
         answersSection.style.display = 'block';
 
+        const hasAcceptedAnswer = question.answer.some(answer => answer.accepted);
+
         question.answer.forEach(answer => {
             const answerCard = createAnswerCard(questionId,
                                                 answer.id,
                                                 answer.answerText,
                                                 answer.score,
+                                                hasAcceptedAnswer,
                                                 answer.accepted);
             answersDiv.appendChild(answerCard);
         });
@@ -63,9 +66,12 @@ async function fetchSingleQuestion() {
     const loadingDiv = document.querySelector('#loading');
     loadingDiv.style.display = 'none';
 
-    // Remove the example icons that were used to copy
+    // Remove the example icons/buttons that were used to copy
     const upvoteButtonExample = document.querySelector('#upvote-button-example');
     upvoteButtonExample.parentNode.removeChild(upvoteButtonExample);
+
+    const acceptButtonExample = document.querySelector('#accept-answer-button-example');
+    acceptButtonExample.parentNode.removeChild(acceptButtonExample);
 
     const acceptedIconExample = document.querySelector('#accepted-icon-example');
     acceptedIconExample.parentNode.removeChild(acceptedIconExample);
@@ -105,7 +111,7 @@ function createQuestionCard(summary, detail) {
 }
 
 
-function createAnswerCard(questionId, answerId, answerText, score, isAccepted) {
+function createAnswerCard(questionId, answerId, answerText, score, hasAcceptedAnswer, isAccepted) {
     const card = document.createElement('div');
     card.className = 'usa-card';
 
@@ -143,6 +149,13 @@ function createAnswerCard(questionId, answerId, answerText, score, isAccepted) {
     scoreSectionCol.className = 'grid-col';
     scoreSectionRow.appendChild(scoreSectionCol);
 
+    if (!hasAcceptedAnswer) {
+        const acceptAnswerExampleButton = document.querySelector('#accept-answer-button-example');
+        const acceptAnswerButtonClone = acceptAnswerExampleButton.cloneNode(true);
+        acceptAnswerButtonClone.id = '';
+        acceptAnswerButtonClone.onclick = () => acceptAnswer(questionId, answerId);
+        scoreSectionCol.appendChild(acceptAnswerButtonClone);
+    }
     if (isAccepted) {
         const acceptedIconExample = document.querySelector('#accepted-icon-example');
         const acceptedIconClone = acceptedIconExample.cloneNode(true);
@@ -166,9 +179,34 @@ function createAnswerCard(questionId, answerId, answerText, score, isAccepted) {
 }
 
 
-function voteOnAnswer(questionId, answerId) {
+async function acceptAnswer(questionId, answerId) {
     // TODO
-    console.log('upvotting answer ' + answerId + ' for question ' + questionId);
+    console.log(JSON.stringify({
+        'question_id': questionId,
+        'answer_id': answerId
+    }));
+}
+
+
+async function voteOnAnswer(questionId, answerId) {
+    const response = await fetch(
+        'TODO',
+        {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'question_id': questionId,
+                'answer_id': answerId
+            })
+        }
+    );
+
+    if (response.ok) {
+        location.reload();
+    }
 }
 
 
@@ -217,8 +255,8 @@ async function submitQuestion() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "question_summary": form.question_summary.value,
-                    "question_detail": form.question_detail.value
+                    'question_summary': form.question_summary.value,
+                    'question_detail': form.question_detail.value
                 })
             }
         );
@@ -268,8 +306,8 @@ async function answerQuestion() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "question_id": form.question_id.value,
-                    "answer": form.answer.value
+                    'question_id': form.question_id.value,
+                    'answer': form.answer.value
                 })
             }
         );
