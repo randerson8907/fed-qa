@@ -36,7 +36,9 @@ async function fetchSingleQuestion() {
     const question = json.body.find(q => q.question_id === questionId);
 
     const questionDiv = document.querySelector('#question-detail');
-    const questionCard = createQuestionCard(question.question_summary, question.question_detail, false);
+    const questionCard = createQuestionCard(question.question_summary,
+                                            question.question_detail,
+                                            questionId);
     questionDiv.appendChild(questionCard);
 
     const questionIdHiddenInput = document.querySelector('#question_id');
@@ -97,7 +99,7 @@ function sortAnswers(answers) {
 }
 
 
-function createQuestionCard(summary, detail) {
+function createQuestionCard(summary, detail, questionId) {
     const card = document.createElement('div');
     card.className = 'usa-card';
 
@@ -126,7 +128,40 @@ function createQuestionCard(summary, detail) {
     const cardBodyText = document.createTextNode(detail);
     cardBodyP.appendChild(cardBodyText);
 
+    const cardFooter = document.createElement('div');
+    cardFooter.className = 'usa-card__footer';
+    cardContainer.appendChild(cardFooter);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'usa-button usa-button--secondary';
+    deleteButton.onclick = () => deleteQuestion(questionId);
+    cardFooter.appendChild(deleteButton);
+
+    const deleteButtonText = document.createTextNode('Delete question');
+    deleteButton.appendChild(deleteButtonText);
+
     return card;
+}
+
+
+async function deleteQuestion(questionId) {
+    const response = await fetch(
+        'https://rkb7e4iex0.execute-api.us-east-1.amazonaws.com/deletequestion',
+        {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'question_id': questionId
+            })
+        }
+    );
+
+    if (response.ok) {
+        navigateToIndex();
+    }
 }
 
 
