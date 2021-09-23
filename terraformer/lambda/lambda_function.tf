@@ -22,7 +22,7 @@ resource "aws_lambda_function" "tfer--AddQuestionFunction" {
   reserved_concurrent_executions = "-1"
   role                           = "arn:aws:iam::744302382340:role/service-role/GetAllFunction-role-buwwkg2y"
   runtime                        = "nodejs14.x"
-  source_code_hash               = "Pl+4CFnCexAa+YnrRc4lKeafhPEZ/dWgO7TH0aQnifw="
+  source_code_hash               = "hUiNOK8fouWzCbO7E3fxZ6NGk9SEeB62voXSkCsDFbQ="
   timeout                        = "60"
 
   tracing_config {
@@ -70,7 +70,7 @@ resource "aws_lambda_function" "tfer--UpdateAnswerFunction" {
   reserved_concurrent_executions = "-1"
   role                           = "arn:aws:iam::744302382340:role/service-role/GetAllFunction-role-buwwkg2y"
   runtime                        = "nodejs14.x"
-  source_code_hash               = "IwB/trLIUkhrnrlcM87R/lkiPKVqLuXGPAQagf2LL+Y="
+  source_code_hash               = "vaVLO8UGlM30JPYzPMtrfRDkfoDXxiO4KhrtINVT2tA="
   timeout                        = "60"
 
   tracing_config {
