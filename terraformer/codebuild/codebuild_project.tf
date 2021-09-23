@@ -42,7 +42,7 @@ resource "aws_codebuild_project" "tfer--sendtos3" {
 
   source {
     buildspec       = "s3update/buildspec.yml"
-    git_clone_depth = "1"
+    git_clone_depth = "0"
 
     git_submodules_config {
       fetch_submodules = "false"
