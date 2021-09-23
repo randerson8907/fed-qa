@@ -57,6 +57,7 @@ function createQuestionRow(questionId, questionSummary, questionDetail, answerCo
     questionIconsCol.appendChild(createQuestionIcons(answerCount, hasAcceptedAnswer));
 
     const summaryHeading = document.createElement('h3');
+    summaryHeading.className = 'margin-top-0';
     summaryCol.appendChild(summaryHeading);
 
     const newHref = document.createElement('a');
@@ -64,6 +65,11 @@ function createQuestionRow(questionId, questionSummary, questionDetail, answerCo
     newHref.href = 'question-detail.html';
     newHref.onclick = () => clickQuestion(questionId);
     summaryHeading.appendChild(newHref);
+
+    if (questionDetail.length > 200) {
+        questionDetail = questionDetail.substr(0, 202);
+        questionDetail += ' ...';
+    }
 
     const linkText = document.createTextNode(questionSummary);
     newHref.appendChild(linkText);
@@ -87,13 +93,6 @@ function createQuestionIcons(answerCount, hasAcceptedAnswer) {
     const iconsSpan = document.createElement('span');
     iconsSpan.className = 'margin-left-1';
 
-    if (hasAcceptedAnswer) {
-        const acceptedIconExample = document.querySelector('#accepted-icon-example');
-        const acceptedIconClone = acceptedIconExample.cloneNode(true);
-        acceptedIconClone.id = '';
-        iconsSpan.appendChild(acceptedIconClone);
-    }
-
     const answerIconExample = document.querySelector('#answer-icon-example');
     const answerIconClone = answerIconExample.cloneNode(true);
     answerIconClone.id = '';
@@ -101,6 +100,13 @@ function createQuestionIcons(answerCount, hasAcceptedAnswer) {
 
     const answerCountText = document.createTextNode(answerCount);
     iconsSpan.appendChild(answerCountText);
+
+    if (hasAcceptedAnswer) {
+        const acceptedIconExample = document.querySelector('#accepted-icon-example');
+        const acceptedIconClone = acceptedIconExample.cloneNode(true);
+        acceptedIconClone.id = '';
+        iconsSpan.appendChild(acceptedIconClone);
+    }
 
     return iconsSpan;
 }
