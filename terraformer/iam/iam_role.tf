@@ -309,8 +309,8 @@ resource "aws_iam_role" "tfer--EEOrganizations" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::572239370997:root",
-          "arn:aws:iam::122334600246:root"
+          "arn:aws:iam::122334600246:root",
+          "arn:aws:iam::572239370997:root"
         ]
       },
       "Sid": "EEControlPlaneAccountTrust"
@@ -431,7 +431,7 @@ resource "aws_iam_role" "tfer--OpsRole" {
 }
 POLICY
 
-  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/ops-default-policy", "arn:aws:iam::aws:policy/AdministratorAccess"]
+  managed_policy_arns  = ["arn:aws:iam::aws:policy/AdministratorAccess", "arn:aws:iam::744302382340:policy/ops-default-policy"]
   max_session_duration = "43200"
   name                 = "OpsRole"
   path                 = "/"
@@ -453,23 +453,23 @@ resource "aws_iam_role" "tfer--TeamRole" {
       "Effect": "Allow",
       "Principal": {
         "Service": [
-          "quicksight.amazonaws.com",
-          "rds.amazonaws.com",
-          "amplify.amazonaws.com",
-          "robomaker.amazonaws.com",
           "deepracer.amazonaws.com",
-          "ecs.amazonaws.com",
-          "ec2.amazonaws.com",
-          "cloudwatch.amazonaws.com",
-          "glue.amazonaws.com",
-          "cloud9.amazonaws.com",
           "dynamodb.amazonaws.com",
-          "lambda.amazonaws.com",
-          "eks.amazonaws.com",
+          "amplify.amazonaws.com",
           "cloudtrail.amazonaws.com",
+          "sagemaker.amazonaws.com",
           "codecommit.amazonaws.com",
           "ecs-tasks.amazonaws.com",
-          "sagemaker.amazonaws.com"
+          "cloud9.amazonaws.com",
+          "eks.amazonaws.com",
+          "lambda.amazonaws.com",
+          "robomaker.amazonaws.com",
+          "quicksight.amazonaws.com",
+          "ec2.amazonaws.com",
+          "glue.amazonaws.com",
+          "rds.amazonaws.com",
+          "ecs.amazonaws.com",
+          "cloudwatch.amazonaws.com"
         ]
       },
       "Sid": "0d8fd6bfe6d74be58e0135dd7e51bb6e"
@@ -479,7 +479,7 @@ resource "aws_iam_role" "tfer--TeamRole" {
 }
 POLICY
 
-  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/0d8fd6bfe6d74be58e0135dd7e51bb6e-policy", "arn:aws:iam::744302382340:policy/team-default-policy", "arn:aws:iam::aws:policy/IAMFullAccess"]
+  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/0d8fd6bfe6d74be58e0135dd7e51bb6e-policy", "arn:aws:iam::aws:policy/IAMFullAccess", "arn:aws:iam::744302382340:policy/team-default-policy"]
   max_session_duration = "43200"
   name                 = "TeamRole"
   path                 = "/"
@@ -503,7 +503,7 @@ resource "aws_iam_role" "tfer--apigatewayrole" {
 POLICY
 
   description          = "Allows API Gateway to push logs to CloudWatch Logs."
-  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/apigatewayallpolicy", "arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"]
+  managed_policy_arns  = ["arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs", "arn:aws:iam::744302382340:policy/apigatewayallpolicy"]
   max_session_duration = "3600"
   name                 = "apigatewayrole"
   path                 = "/"
@@ -525,7 +525,7 @@ resource "aws_iam_role" "tfer--codebuild-002D-sendtos3-002D-service-002D-role" {
 }
 POLICY
 
-  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/service-role/CodeBuildBasePolicy-sendtos3-us-east-1", "arn:aws:iam::744302382340:policy/service-role/CodeBuildCloudWatchLogsPolicy-sendtos3-us-east-1", "arn:aws:iam::aws:policy/AdministratorAccess"]
+  managed_policy_arns  = ["arn:aws:iam::744302382340:policy/service-role/CodeBuildBasePolicy-sendtos3-us-east-1", "arn:aws:iam::aws:policy/AdministratorAccess", "arn:aws:iam::744302382340:policy/service-role/CodeBuildCloudWatchLogsPolicy-sendtos3-us-east-1"]
   max_session_duration = "3600"
   name                 = "codebuild-sendtos3-service-role"
   path                 = "/service-role/"

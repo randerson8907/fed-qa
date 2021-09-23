@@ -54,7 +54,7 @@ resource "aws_lambda_function" "tfer--GetAllFunction" {
   reserved_concurrent_executions = "-1"
   role                           = "arn:aws:iam::744302382340:role/service-role/GetAllFunction-role-buwwkg2y"
   runtime                        = "nodejs14.x"
-  source_code_hash               = "Z69m885SMPmH6Hq/zve16TaZeV4oo3dH8yhovl6IQ34="
+  source_code_hash               = "PsiIGQxvkEUEvVYaDl4azn85O5ULhYff5kDbnnI3CNM="
   timeout                        = "60"
 
   tracing_config {
