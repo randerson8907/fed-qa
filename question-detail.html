@@ -87,16 +87,16 @@
     <div class="grid-row margin-top-3">
       <!-- START QUESTIONS DETAIL -->
       <div id="loading">Loading...</div>
-      <div id="question-detail" class="grid-col-8"></div>
+      <div id="question-detail" class="grid-offset-2 grid-col-8"></div>
       <!-- END QUESTION DETAIL -->
     </div>
 
     <div id="answer-section" class="grid-row" style="display: none">
-      <div class="grid-col-8">
+      <div class="grid-offset-2 grid-col-8">
         <h3>Answers</h3>
       </div>
       <!-- START LIST ANSWERS -->
-      <div id="answer-list" class="grid-col-8"></div>
+      <div id="answer-list" class="grid-offset-2 grid-col-8"></div>
 
       <!-- Example button/svg that will be cloned then removed once we're done building the answers -->
       <button
@@ -129,15 +129,17 @@
 
     <div id="answer-buttons" class="grid-row margin-bottom-2" style="display: none">
       <!-- START ANSWER FORM -->
-      <button
-        id="toggle-answer-button"
-        type="button"
-        class="usa-button usa-button--outline"
-        onclick="toggleAnswerForm()">
+      <div class="grid-offset-2 grid-col-8">
+        <button
+                id="toggle-answer-button"
+                type="button"
+                class="usa-button usa-button--outline"
+                onclick="toggleAnswerForm()">
           Provide an Answer
-      </button>
+        </button>
+      </div>
 
-      <div id="answer-form-section" class="grid-col-8" style="display: none">
+      <div id="answer-form-section" class="grid-offset-2 grid-col-8" style="display: none">
         <form id="answer-form">
           <input type="hidden" id="question_id" name="question_id" value="">
 
