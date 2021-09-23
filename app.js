@@ -1,28 +1,23 @@
 async function fetchQuestions() {
-    const questionUl = document.querySelector('#question-list');
+    const questionListTable = document.querySelector('#question-list');
 
     const response = await fetch('https://uhgwqthcj3.execute-api.us-east-1.amazonaws.com/CFStage/questions');
     const json = await response.json();
 
     json.body.forEach(q => {
-        const newLi = document.createElement('li');
-        const newHref = document.createElement('a');
-        const linkText = document.createTextNode(q.question_summary);
-
-        newHref.className = 'usa-link';
-        newHref.href = 'question-detail.html';
-        newHref.onclick = () => clickQuestion(q.question_id);
-
-        newHref.appendChild(linkText);
-        newLi.appendChild(newHref);
-        questionUl.appendChild(newLi);
 
         let hasAcceptedAnswer = false;
         if (q.answer) {
             hasAcceptedAnswer = q.answer.some(answer => answer.accepted);
-            newLi.appendChild(createQuestionIcons(q.answer.length, hasAcceptedAnswer));
+        } else {
+            q.answer = [];
         }
-
+        const newRow = createQuestionRow(q.question_id,
+                                         q.question_summary,
+                                         q.question_detail,
+                                         q.answer.length,
+                                         hasAcceptedAnswer);
+        questionListTable.appendChild(newRow);
     });
 
     const loadingDiv = document.querySelector('#loading');
@@ -34,6 +29,57 @@ async function fetchQuestions() {
 
     const acceptedIconExample = document.querySelector('#accepted-icon-example');
     acceptedIconExample.parentNode.removeChild(acceptedIconExample);
+}
+
+
+function createQuestionRow(questionId, questionSummary, questionDetail, answerCount, hasAcceptedAnswer) {
+    const row = document.createElement('tr');
+
+    const data = document.createElement('td');
+    row.appendChild(data);
+
+    const dataContainer = document.createElement('div');
+    dataContainer.className = 'grid-container';
+    data.appendChild(dataContainer);
+
+    const summaryRow = document.createElement('div');
+    summaryRow.className = 'grid-row';
+    dataContainer.appendChild(summaryRow);
+
+    const summaryCol = document.createElement('div');
+    summaryCol.className = 'grid-col-10';
+    summaryRow.appendChild(summaryCol);
+
+    const questionIconsCol = document.createElement('div');
+    questionIconsCol.className = 'grid-col-2 text-middle';
+    summaryRow.appendChild(questionIconsCol);
+
+    questionIconsCol.appendChild(createQuestionIcons(answerCount, hasAcceptedAnswer));
+
+    const summaryHeading = document.createElement('h3');
+    summaryCol.appendChild(summaryHeading);
+
+    const newHref = document.createElement('a');
+    newHref.className = 'usa-link';
+    newHref.href = 'question-detail.html';
+    newHref.onclick = () => clickQuestion(questionId);
+    summaryHeading.appendChild(newHref);
+
+    const linkText = document.createTextNode(questionSummary);
+    newHref.appendChild(linkText);
+
+    const detailRow = document.createElement('div');
+    detailRow.className = 'grid-row';
+    dataContainer.appendChild(detailRow);
+
+    const detailCol = document.createElement('div');
+    detailCol.className = 'grid-col-10';
+    detailRow.appendChild(detailCol);
+
+    const detailText = document.createTextNode(questionDetail);
+    detailCol.appendChild(detailText);
+
+    return row;
 }
 
 
