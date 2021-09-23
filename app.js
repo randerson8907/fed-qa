@@ -194,6 +194,7 @@ function createQuestionCard(summary, detail, questionId) {
 
     const cardContainer = document.createElement('div');
     cardContainer.className = 'usa-card__container bg-accent-cool-lighter';
+
     card.appendChild(cardContainer);
 
     const cardHeader = document.createElement('header');
@@ -259,7 +260,12 @@ function createAnswerCard(questionId, answerId, answerText, score, hasAcceptedAn
     card.className = 'usa-card';
 
     const cardContainer = document.createElement('div');
-    cardContainer.className = 'usa-card__container bg-base-lightest';
+    cardContainer.className = 'usa-card__container';
+    if (isAccepted) {
+        cardContainer.classList.add('bg-accent-cool-lighter')
+    } else {
+        cardContainer.classList.add('bg-base-lightest');
+    }
     card.appendChild(cardContainer);
 
     const cardBody = document.createElement('div');
