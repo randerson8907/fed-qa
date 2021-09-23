@@ -85,7 +85,7 @@
     <!-- START LIST OF EXISTING QUESTIONS -->
     <div class="grid-container margin-top-3 margin-bottom-2">
         <div class="grid-row">
-            <div class="grid-col-8">
+            <div class="grid-col-12">
                 <button
                     type="button"
                     class="usa-button usa-button--outline"
@@ -95,7 +95,11 @@
 
                 <h3 class="margin-top-3">Browse Questions</h3>
                 <div id="loading">Loading...</div>
-                <ul id="question-list" class="usa-list"></ul>
+
+                <table class="usa-table usa-table--borderless width-full">
+                    <tbody id="question-list">
+                    </tbody>
+                </table>
 
                 <!-- Example comments icon -->
                 <svg id="answer-icon-example" class="usa-icon text-middle margin-right-05 text-blue" aria-hidden="true" focusable="false" role="img">
